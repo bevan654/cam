@@ -116,7 +116,8 @@ src/
 └── assets/             # Static assets
 
 api/                    # Vercel serverless functions
-└── create-payment-intent.ts # Stripe Payment Intent creation
+├── create-payment-intent.ts # Stripe Payment Intent creation
+└── health.ts           # Health check endpoint
 ```
 
 ## 🔒 Payment Flow
@@ -153,6 +154,11 @@ api/                    # Vercel serverless functions
 1. **Environment variables not set**: Check Vercel dashboard
 2. **API routes not working**: Verify `api/` folder structure
 3. **Build errors**: Check build logs in Vercel dashboard
+4. **Server errors (FUNCTION_INVOCATION_FAILED)**:
+   - Ensure `STRIPE_SECRET_KEY` is set in Vercel environment variables
+   - Check Vercel function logs for specific error details
+   - Test health endpoint: `/api/health`
+   - Verify Stripe package is properly installed
 
 ## 🤝 Contributing
 
