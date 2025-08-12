@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import Navbar from '../components/Navbar'
 import StripePaymentForm from '../components/StripePaymentForm'
-import { createPaymentIntent } from '../api/stripeMock'
+
 
 type CartItem = {
   id: string
@@ -192,35 +192,47 @@ export default function CheckoutPage() {
           throw new Error('Please enter your card details')
         }
 
-        // Step 1: Create PaymentIntent using mock service (development)
-        // In production, this would call your actual server API
-        const paymentIntent = await createPaymentIntent({
-          amountCents: Math.round(total * 100), // Convert to cents
-          currency: 'AUD'
+        // Step 1: Create PaymentIntent on the server
+        const response = await fetch('/api/create-payment-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amountCents: Math.round(total * 100), // Convert to cents
+            currency: 'AUD'
+          })
         })
 
-        const { clientSecret } = paymentIntent
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to create payment intent')
+        }
+
+        const { clientSecret } = await response.json()
 
         // Step 2: Confirm the payment with Stripe
-        // For development, we'll simulate the payment confirmation
-        // In production, this would use the actual Stripe confirmCardPayment
-        
-        // Simulate payment processing
-        await new Promise(resolve => setTimeout(resolve, 1500))
-        
-        // Create a mock successful payment intent for development
-        const mockPaymentIntent = {
-          id: paymentIntent.id,
-          amount: paymentIntent.amount,
-          currency: paymentIntent.currency,
-          status: 'succeeded',
-          client_secret: clientSecret
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: paymentInfo.cardholderName,
+            },
+          },
+        })
+
+        if (error) {
+          throw new Error(error.message || 'Payment failed')
+        }
+
+        if (paymentIntent.status !== 'succeeded') {
+          throw new Error('Payment was not successful')
         }
 
         // Update payment info with successful payment
         setPaymentInfo(prev => ({
           ...prev,
-          stripePaymentIntent: mockPaymentIntent
+          stripePaymentIntent: paymentIntent
         }))
       }
       

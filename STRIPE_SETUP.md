@@ -1,58 +1,109 @@
-# 🚀 Stripe Payment Intents Setup Guide
+# Stripe Payment Intents API Setup Guide
 
-## Quick Setup
+This guide covers setting up Stripe's Payment Intents API for the Campus Angel food delivery app.
 
-### 1. Create Environment File
-Create a `.env.local` file in your project root with:
+## 🚀 What Changed
+
+**Previous Implementation**: Only tokenized card details, never created or confirmed payments
+**New Implementation**: Full Payment Intents API flow with server-side intent creation and client-side confirmation
+
+## 🔧 Setup Steps
+
+### 1. Environment Variables
+
+Create a `.env` file in your project root:
+
+```env
+STRIPE_SECRET_KEY=sk_test_your_test_secret_key_here
 ```
 
-### 2. Test the Integration
-1. **Start your dev server**: `npm run dev`
-2. **Add items to cart** and go to checkout
-3. **Use test card**: `4242 4242 4242 4242`
-4. **Any future expiry** (e.g., `12/25`)
-5. **Any 3-digit CVC** (e.g., `123`)
+**Important**: Never commit this file to version control!
 
-### 3. Verify in Stripe Dashboard
-- Go to [Stripe Dashboard](https://dashboard.stripe.com)
-- Toggle **"Viewing test data"**
-- Check **Payments** section - you should see your test payments!
+### 2. Server-Side Configuration
 
-## 🔧 What Changed
+The API function `/api/create-payment-intent.ts` is already configured to:
+- Read `amountCents` and `currency` from JSON body
+- Validate `amountCents` is an integer ≥ 50 for AUD
+- Use `stripe.paymentIntents.create()` with `automatic_payment_methods.enabled = true`
+- Return `client_secret` in JSON
+- Read `STRIPE_SECRET_KEY` from environment variables
+- Use TypeScript and proper error handling
 
-### Before (Tokenization Only)
-- ❌ Only created payment methods
-- ❌ No actual payments in Stripe
-- ❌ No transaction records
+### 3. Client-Side Configuration
 
-### After (Payment Intents API)
-- ✅ Creates PaymentIntent on server
-- ✅ Confirms payment on client
-- ✅ Shows transactions in Stripe Dashboard
-- ✅ Proper error handling
-- ✅ Secure server-side processing
+Update `src/config/stripe.ts` with your publishable key:
 
-## 🎯 Payment Flow
+```typescript
+export const stripePromise = loadStripe('pk_test_your_test_publishable_key')
+```
 
-1. **User clicks "Place Order"**
-2. **Server creates PaymentIntent** (`/api/create-payment-intent`)
-3. **Client confirms payment** with `stripe.confirmCardPayment()`
-4. **Payment succeeds** → Order confirmation
-5. **Payment fails** → Error message
+## 🧪 Testing
 
-## 🚨 Important Notes
+### Test Mode Setup
 
-- **Never commit `.env.local`** to version control
-- **Use test keys** for development
-- **Switch to live keys** for production
-- **Test thoroughly** before going live
+1. **Get test keys** from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+2. **Toggle "Viewing test data"** in your Stripe Dashboard
+3. **Use test card**: `4242 4242 4242 4242` (any future expiry, any CVC)
 
-## 🆘 Troubleshooting
+### Payment Flow Verification
 
-- **"Stripe not initialized"**: Check your publishable key
-- **"Failed to create payment intent"**: Check server logs and environment variables
-- **Payment confirmation fails**: Verify card details and network connection
+After successful payment:
+1. **Check Stripe Dashboard** → Payments section
+2. **Transaction should appear** with status "Succeeded"
+3. **Payment Intent details** should show the full payment flow
+
+## 🔒 Security Notes
+
+- **Secret keys** are only used server-side in Vercel functions
+- **Publishable keys** are safe for client-side use
+- **Environment variables** are automatically handled by Vercel
+- **HTTPS is enforced** in production
+
+## 🚀 Production Deployment
+
+### Vercel Environment Variables
+
+1. **Go to Vercel Dashboard** → Your Project → Settings → Environment Variables
+2. **Add**: `STRIPE_SECRET_KEY` with your live secret key
+3. **Redeploy** the project
+
+### Key Updates
+
+1. **Switch to live keys** in Stripe Dashboard
+2. **Update publishable key** in `src/config/stripe.ts`
+3. **Test thoroughly** before going live
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **Payment Intent creation fails**:
+   - Check `STRIPE_SECRET_KEY` in Vercel environment variables
+   - Verify the key is correct and has proper permissions
+
+2. **Client-side errors**:
+   - Ensure publishable key is correct in `src/config/stripe.ts`
+   - Check browser console for detailed error messages
+
+3. **404 on API routes**:
+   - Verify `vercel.json` is configured correctly
+   - Ensure API functions are in the `api/` folder
+
+### Testing Checklist
+
+- [ ] Test card details are accepted
+- [ ] Payment Intent is created successfully
+- [ ] Payment confirmation works
+- [ ] Transaction appears in Stripe Dashboard
+- [ ] Order confirmation is displayed
+- [ ] Error handling works for declined cards
+
+## 📚 Additional Resources
+
+- [Stripe Payment Intents Documentation](https://stripe.com/docs/payments/payment-intents)
+- [Vercel Serverless Functions](https://vercel.com/docs/functions)
+- [Stripe Test Cards](https://stripe.com/docs/testing#cards)
 
 ---
 
-**Ready to test?** Start your dev server and try the checkout flow! 🎉asdasd
+**Note**: This implementation creates real Payment Intents and processes actual test payments. Always test thoroughly in test mode before going live.
