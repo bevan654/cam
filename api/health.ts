@@ -1,4 +1,4 @@
-export default function handler(req: any, res: any) {
+module.exports = function handler(req: any, res: any) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
