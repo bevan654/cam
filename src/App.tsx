@@ -1,20 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 
-function useScrollOpacity() {
-  const [opacity, setOpacity] = useState(0.0)
-  useEffect(() => {
-    const onScroll = () => setOpacity(Math.min(1, window.scrollY / 120))
-    onScroll()
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-  return opacity
-}
-
 function App() {
-  const opacity = useScrollOpacity()
   const featuresRef = useRef<HTMLDivElement | null>(null)
 
   // Reveal feature cards on scroll

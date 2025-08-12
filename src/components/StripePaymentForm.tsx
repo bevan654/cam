@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { stripeConfig, currencySymbol } from '../config/stripe'
+import { currencySymbol } from '../config/stripe'
 
 interface StripePaymentFormProps {
   amount: number

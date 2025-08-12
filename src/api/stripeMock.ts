@@ -43,7 +43,7 @@ export const createPaymentIntent = async (request: CreatePaymentIntentRequest): 
 }
 
 // Mock payment confirmation
-export const confirmPayment = async (clientSecret: string): Promise<{ status: string }> => {
+export const confirmPayment = async (_clientSecret: string): Promise<{ status: string }> => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000))
   
