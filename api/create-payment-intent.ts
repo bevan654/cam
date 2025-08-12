@@ -1,5 +1,9 @@
 import Stripe from 'stripe'
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: '2023-10-16',
+})
+
 export default async function handler(req: any, res: any) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -25,19 +29,13 @@ export default async function handler(req: any, res: any) {
     })
 
     // Check if Stripe secret key is available
-    const stripeSecretKey = process.env.STRIPE_SECRET_KEY
-    if (!stripeSecretKey) {
+    if (!process.env.STRIPE_SECRET_KEY) {
       console.error('STRIPE_SECRET_KEY environment variable is not set')
       return res.status(500).json({ 
         error: 'Stripe configuration error - secret key not found',
         debug: 'Check Vercel environment variables'
       })
     }
-
-    // Initialize Stripe
-    const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: '2023-10-16',
-    })
 
     const { amountCents, currency = 'AUD' } = req.body
 

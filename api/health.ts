@@ -18,6 +18,7 @@ export default function handler(req: any, res: any) {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'unknown',
-    hasStripeKey: !!process.env.STRIPE_SECRET_KEY
+    hasStripeKey: !!process.env.STRIPE_SECRET_KEY,
+    vercelEnv: process.env.VERCEL_ENV || 'unknown'
   })
 }
