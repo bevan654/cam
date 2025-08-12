@@ -18,9 +18,7 @@ This app uses Stripe's Payment Intents API for secure payment processing.
 ### Test Mode Setup
 
 1. **Environment Variables**: Create a `.env.local` file in the root directory:
-   ```bash
-   STRIPE_SECRET_KEY=sk_test_51RvFxXPhAQtRWVqnxfjCsq8gv0xMMKT08AILZqCLYU6QVdvLnEOZUY14Xc30uN08RtDRcEdYYzwuv2GXWJyWcCrU00UlRqUyKD
-   ```
+
 
 2. **Test Card Numbers**:
    - **Success**: `4242 4242 4242 4242`

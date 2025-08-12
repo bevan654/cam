@@ -4,8 +4,6 @@
 
 ### 1. Create Environment File
 Create a `.env.local` file in your project root with:
-```bash
-STRIPE_SECRET_KEY=sk_test_51RvFxXPhAQtRWVqnxfjCsq8gv0xMMKT08AILZqCLYU6QVdvLnEOZUY14Xc30uN08RtDRcEdYYzwuv2GXWJyWcCrU00UlRqUyKD
 ```
 
 ### 2. Test the Integration
