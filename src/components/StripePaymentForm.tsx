@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { CardElement } from '@stripe/react-stripe-js'
 import { currencySymbol } from '../config/stripe'
 
 interface StripePaymentFormProps {
   amount: number
-  onPaymentSuccess: (paymentIntent: any) => void
-  onPaymentError: (error: string) => void
-  isProcessing: boolean
   onCardError?: (error: string) => void
 }
 
@@ -28,19 +25,9 @@ const cardElementOptions = {
 
 export default function StripePaymentForm({ 
   amount, 
-  onPaymentSuccess, 
-  onPaymentError, 
-  isProcessing,
   onCardError
 }: StripePaymentFormProps) {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [cardError, setCardError] = useState<string>('')
-
-  // Function to get card element for parent component
-  const getCardElement = () => {
-    return elements?.getElement(CardElement)
-  }
+  const [cardError] = useState<string>('')
 
   // Expose getCardElement to parent via callback
   useEffect(() => {

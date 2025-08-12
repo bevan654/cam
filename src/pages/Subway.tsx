@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
   // Map customization IDs to friendly names
@@ -617,12 +617,9 @@ export default function SubwayPage() {
                 const id = option.Id
                 
                 // Try to extract meaningful names from product descriptions
-                const productName = product.Name.toLowerCase()
-                const productDesc = product.Description?.toLowerCase() || ''
-                
                 // Smart mapping based on context and common Subway items
                 if (!discoveredMappings[id]) {
-                  discoveredMappings[id] = generateSmartMapping(id, optionType, productName, productDesc)
+                  discoveredMappings[id] = generateSmartMapping(id, optionType)
                 }
               })
             }
@@ -637,7 +634,7 @@ export default function SubwayPage() {
   }
 
   // Generate smart mappings based on context
-  const generateSmartMapping = (id: string, optionType: string, productName: string, productDesc: string): string => {
+  const generateSmartMapping = (id: string, optionType: string): string => {
     // Common Subway menu items mapping
     const commonMappings: { [key: string]: string } = {
       // Breads
@@ -799,7 +796,7 @@ export default function SubwayPage() {
     // Calculate total price including customizations
     let totalPrice = build.Price
     if (build.Options && customizations.length > 0) {
-      Object.entries(build.Options).forEach(([optionType, optionGroup]) => {
+      Object.entries(build.Options).forEach(([, optionGroup]) => {
         if (optionGroup && typeof optionGroup === 'object' && optionGroup.Options) {
           customizations.forEach(customizationId => {
             const option = optionGroup.Options.find(opt => opt.Id === customizationId)

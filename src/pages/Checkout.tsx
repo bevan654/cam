@@ -480,9 +480,6 @@ export default function CheckoutPage() {
                     
                     <StripePaymentForm
                       amount={total}
-                      onPaymentSuccess={() => {}}
-                      onPaymentError={() => {}}
-                      isProcessing={isProcessing}
                     />
                     
                     {errors.stripe && <span className="error-text">{errors.stripe}</span>}
