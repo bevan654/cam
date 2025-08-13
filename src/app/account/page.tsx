@@ -130,8 +130,8 @@ export default function AccountPage() {
                 <div className="avatar-status">Online</div>
               </div>
               <div className="profile-info-modern">
-                <h3>{user.firstName} {user.lastName}</h3>
-                <p className="profile-email-modern">{user.email}</p>
+                <h3>{user?.firstName} {user?.lastName}</h3>
+                <p className="profile-email-modern">{user?.email}</p>
                 <span className="profile-badge">Campus Student</span>
               </div>
               <div className="profile-actions">
@@ -145,7 +145,7 @@ export default function AccountPage() {
                   <div className="detail-icon">👤</div>
                   <div className="detail-content">
                     <span className="detail-label">Full Name</span>
-                    <span className="detail-value">{user.firstName} {user.lastName}</span>
+                    <span className="detail-value">{user?.firstName} {user?.lastName}</span>
                   </div>
                 </div>
                 
@@ -153,7 +153,7 @@ export default function AccountPage() {
                   <div className="detail-icon">📧</div>
                   <div className="detail-content">
                     <span className="detail-label">Email Address</span>
-                    <span className="detail-value">{user.email}</span>
+                    <span className="detail-value">{user?.email}</span>
                   </div>
                 </div>
                 
@@ -161,7 +161,7 @@ export default function AccountPage() {
                   <div className="detail-icon">📱</div>
                   <div className="detail-content">
                     <span className="detail-label">Phone Number</span>
-                    <span className="detail-value">{user.phone || 'Not provided'}</span>
+                    <span className="detail-value">{user?.phone || 'Not provided'}</span>
                   </div>
                 </div>
                 

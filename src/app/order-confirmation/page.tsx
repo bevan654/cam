@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
@@ -25,7 +25,7 @@ interface Order {
   created_at: string;
 }
 
-export default function OrderConfirmationPage() {
+function OrderConfirmationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading: authLoading, logout } = useAuth();
@@ -296,5 +296,13 @@ export default function OrderConfirmationPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function OrderConfirmationPage() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <OrderConfirmationContent />
+    </Suspense>
   );
 }

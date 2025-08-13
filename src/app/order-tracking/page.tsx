@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../hooks/useAuth';
@@ -65,7 +65,7 @@ const ORDER_STATUSES: OrderStatus[] = [
   }
 ];
 
-export default function OrderTrackingPage() {
+function OrderTrackingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading: authLoading, logout } = useAuth();
@@ -349,5 +349,13 @@ export default function OrderTrackingPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function OrderTrackingPage() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <OrderTrackingContent />
+    </Suspense>
   );
 }
