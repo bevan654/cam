@@ -1,31 +1,64 @@
 # Campus Angel - University Food Delivery App
 
-A modern, vibrant food delivery application designed specifically for university campuses, built with React, TypeScript, and Vite.
+A modern, Uber Eats-style food delivery application specifically designed for university campuses. Built with Next.js, TypeScript, and Stripe integration.
 
 ## 🚀 Features
 
-- **Modern UI/UX**: Orange and white theme with smooth animations and responsive design
-- **Restaurant Management**: Browse restaurants, view menus, and customize orders
-- **Smart Cart System**: Add items with customizations, manage quantities, and persistent cart
-- **Checkout Flow**: Complete delivery details, contact info, and payment processing
-- **Stripe Integration**: Secure payment processing using Stripe Payment Intents API
-- **Mobile Responsive**: Optimized for all device sizes
+- **Modern UI/UX**: Beautiful, responsive design with Campus Angel branding
+- **Restaurant Management**: Browse restaurants, view menus, and place orders
+- **Menu Customization**: Customize your food items with detailed options
+- **Shopping Cart**: Add items, manage quantities, and review orders
+- **Checkout System**: Complete checkout with delivery details and payment
+- **Stripe Integration**: Secure payment processing
+- **API Backend**: Comprehensive REST API for all app functionality
+- **Mobile Responsive**: Works perfectly on all devices
 
-## 🛠️ Technical Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Routing**: React Router DOM v6
-- **Styling**: CSS3 with modern features (Grid, Flexbox, CSS Variables)
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: CSS3 with custom design system
+- **Backend**: Vercel Serverless Functions
 - **Payment**: Stripe Payment Intents API
-- **Deployment**: Vercel (Frontend + Serverless Functions)
-- **State Management**: React Hooks + Local Storage
+- **Deployment**: Vercel (optimized)
 
-## 📦 Installation
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Homepage
+│   ├── restaurants/       # Restaurant pages
+│   ├── checkout/          # Checkout page
+│   └── order-confirmation/ # Order confirmation
+├── components/            # React components
+│   └── Navbar.tsx        # Navigation component
+└── index.css             # Global styles
+
+api/                      # Vercel API functions
+├── create-payment-intent.ts
+├── orders/               # Order management
+├── restaurants/          # Restaurant data
+├── menu/                 # Menu management
+├── users/                # User profiles
+├── delivery/             # Delivery services
+└── notifications/        # Notification system
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+- Vercel account (for deployment)
+
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/campus-angel.git
-   cd campus-angel
+   git clone <your-repo-url>
+   cd uni-food-delivery
    ```
 
 2. **Install dependencies**
@@ -34,131 +67,109 @@ A modern, vibrant food delivery application designed specifically for university
    ```
 
 3. **Set up environment variables**
-   ```bash
-   cp env.example .env
-   ```
-   
-   Edit `.env` and add your Stripe secret key:
+   Create a `.env.local` file:
    ```env
    STRIPE_SECRET_KEY=sk_test_your_test_secret_key_here
    ```
 
-4. **Start development server**
+4. **Run development server**
    ```bash
    npm run dev
    ```
 
-## 🔑 Stripe Integration Setup
+5. **Open your browser**
+   Navigate to `http://localhost:3000`
 
-### Test Mode (Development)
-1. **Get your test keys** from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
-2. **Update client-side key** in `src/config/stripe.ts`:
-   ```typescript
-   export const stripePromise = loadStripe('pk_test_your_test_publishable_key')
-   ```
-3. **Set server-side key** in `.env`:
-   ```env
-   STRIPE_SECRET_KEY=sk_test_your_test_secret_key
-   ```
-4. **Test with test card**: `4242 4242 4242 4242` (any future expiry, any CVC)
+## 🚀 Deployment to Vercel
 
-### Production Mode
-1. **Switch to live keys** in Stripe Dashboard
-2. **Update client-side key** in `src/config/stripe.ts`:
-   ```typescript
-   export const stripePromise = loadStripe('pk_live_your_live_publishable_key')
-   ```
-3. **Set live secret key** in `.env`:
-   ```env
-   STRIPE_SECRET_KEY=sk_live_your_live_secret_key
-   ```
+### Automatic Deployment
 
-### Important Security Notes
-- **Never expose secret keys** in client-side code
-- **Secret keys are only used** in Vercel serverless functions
-- **Publishable keys are safe** to use in client-side code
-- **Always use HTTPS** in production
-
-## 🚀 Deployment
-
-### Vercel Deployment
-1. **Push to GitHub**:
+1. **Push to GitHub**
    ```bash
    git add .
-   git commit -m "Ready for deployment"
+   git commit -m "Initial commit"
    git push origin main
    ```
 
-2. **Deploy to Vercel**:
-   - Connect your GitHub repository to Vercel
-   - Add environment variables in Vercel dashboard
-   - Deploy automatically on push
+2. **Connect to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Vercel will automatically detect Next.js and deploy
 
-### Environment Variables in Vercel
-- `STRIPE_SECRET_KEY`: Your Stripe secret key (server-side only)
+### Manual Deployment
 
-## 📱 App Structure
+1. **Install Vercel CLI**
+   ```bash
+   npm i -g vercel
+   ```
 
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Navbar.tsx     # Navigation component
-│   └── StripePaymentForm.tsx # Stripe payment form
-├── pages/              # Page components
-│   ├── App.tsx        # Main landing page
-│   ├── Restaurants.tsx # Restaurant listing
-│   ├── Subway.tsx     # Subway restaurant page
-│   └── Checkout.tsx   # Checkout and payment
-├── config/             # Configuration files
-│   └── stripe.ts      # Stripe configuration
-├── api/                # Mock API services
-│   └── stripeMock.ts  # Development mock (not used in production)
-└── assets/             # Static assets
+2. **Deploy**
+   ```bash
+   vercel
+   ```
 
-api/                    # Vercel serverless functions
-├── create-payment-intent.ts # Stripe Payment Intent creation
-└── health.ts           # Health check endpoint
-```
+3. **Set environment variables in Vercel dashboard**
+   - `STRIPE_SECRET_KEY`: Your Stripe secret key
 
-## 🔒 Payment Flow
+## 🔧 Available Scripts
 
-1. **User selects items** and proceeds to checkout
-2. **Server creates PaymentIntent** via `/api/create-payment-intent`
-3. **Client confirms payment** using `stripe.confirmCardPayment()`
-4. **Payment is processed** and order is confirmed
-5. **Transaction appears** in Stripe Dashboard → Payments
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## 🧪 Testing
+## 🌐 API Endpoints
 
-### Stripe Test Mode
-- **Toggle "Viewing test data"** in Stripe Dashboard
-- **Use test card numbers**:
-  - `4242 4242 4242 4242` - Successful payment
-  - `4000 0000 0000 0002` - Declined payment
-- **Monitor test transactions** in Stripe Dashboard
+The app includes a comprehensive API with the following endpoints:
 
-### Local Development
-- **Mock API available** in `src/api/stripeMock.ts` for offline development
-- **Switch to real API** by updating checkout logic
-- **Test with Vercel dev** for full serverless function testing
+- **Payment**: `/api/create-payment-intent`
+- **Orders**: `/api/orders/*`
+- **Restaurants**: `/api/restaurants/*`
+- **Menu**: `/api/menu/*`
+- **Users**: `/api/users/*`
+- **Delivery**: `/api/delivery/*`
+- **Notifications**: `/api/notifications/*`
+- **Health**: `/api/health`
 
-## 🚨 Troubleshooting
+See `API_DOCUMENTATION.md` for complete API documentation.
 
-### Common Issues
-1. **404 on direct route access**: Ensure `vercel.json` is configured
-2. **Payment Intent creation fails**: Check `STRIPE_SECRET_KEY` in environment
-3. **Client-side errors**: Verify publishable key in `src/config/stripe.ts`
-4. **Build failures**: Run `npm run build` locally to check for errors
+## 🎨 Customization
 
-### Vercel Deployment Issues
-1. **Environment variables not set**: Check Vercel dashboard
-2. **API routes not working**: Verify `api/` folder structure
-3. **Build errors**: Check build logs in Vercel dashboard
-4. **Server errors (FUNCTION_INVOCATION_FAILED)**:
-   - Ensure `STRIPE_SECRET_KEY` is set in Vercel environment variables
-   - Check Vercel function logs for specific error details
-   - Test health endpoint: `/api/health`
-   - Verify Stripe package is properly installed
+### Branding
+- Update colors in `src/index.css` CSS variables
+- Modify logo and branding in `src/components/Navbar.tsx`
+
+### Content
+- Update restaurant data in API functions
+- Modify menu items and customizations
+- Customize delivery options and fees
+
+### Styling
+- All styles are in `src/index.css`
+- Responsive design with mobile-first approach
+- Custom CSS variables for easy theming
+
+## 📱 Pages
+
+1. **Homepage** (`/`) - Landing page with hero section and features
+2. **Restaurants** (`/restaurants`) - Browse all available restaurants
+3. **Restaurant Menu** (`/restaurants/[id]`) - View menu and add items to cart
+4. **Checkout** (`/checkout`) - Complete order with delivery and payment
+5. **Order Confirmation** (`/order-confirmation`) - Order success page
+
+## 🔒 Security Features
+
+- CORS enabled for API endpoints
+- Input validation and sanitization
+- Secure payment processing with Stripe
+- Environment variable protection
+
+## 🚀 Performance Features
+
+- Next.js App Router for optimal routing
+- Server-side rendering capabilities
+- Optimized images and assets
+- Responsive design for all devices
 
 ## 🤝 Contributing
 
@@ -175,10 +186,19 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 For support and questions:
-- Create an issue on GitHub
-- Check the troubleshooting section
-- Review Stripe documentation for payment-related issues
+- Check the API documentation
+- Review the code comments
+- Open an issue on GitHub
+
+## 🔮 Future Enhancements
+
+- User authentication and profiles
+- Order tracking and history
+- Push notifications
+- Real-time delivery updates
+- Restaurant admin panel
+- Analytics dashboard
 
 ---
 
-**Note**: This app uses Stripe's Payment Intents API for secure payment processing. Always test thoroughly in test mode before going live with real payments.
+**Built with ❤️ for university students everywhere**

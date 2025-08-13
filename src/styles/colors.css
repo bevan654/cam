@@ -1,0 +1,136 @@
+:root {
+  /* Primary Colors */
+  --primary-color: #ff6b35;
+  --primary-dark: #e55a2b;
+  --primary-light: #ff8a5c;
+  
+  /* Secondary Colors */
+  --secondary-color: #4ecdc4;
+  --secondary-dark: #3db8b0;
+  --secondary-light: #6fd8d1;
+  
+  /* Accent Colors */
+  --accent-color: #45b7d1;
+  --accent-dark: #3a9bb3;
+  --accent-light: #5bc0d8;
+  
+  /* Success Colors */
+  --success-color: #28a745;
+  --success-dark: #1e7e34;
+  --success-light: #34ce57;
+  
+  /* Warning Colors */
+  --warning-color: #ffc107;
+  --warning-dark: #e0a800;
+  --warning-light: #ffca2c;
+  
+  /* Error Colors */
+  --error-color: #dc3545;
+  --error-dark: #c82333;
+  --error-light: #e4606d;
+  
+  /* Info Colors */
+  --info-color: #17a2b8;
+  --info-dark: #138496;
+  --info-light: #1fc2d4;
+  
+  /* Neutral Colors */
+  --white: #ffffff;
+  --light-gray: #f8f9fa;
+  --gray: #6c757d;
+  --dark-gray: #495057;
+  --black: #212529;
+  
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-dark: #343a40;
+  --bg-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Text Colors */
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-light: #ffffff;
+  --text-muted: #adb5bd;
+  
+  /* Border Colors */
+  --border-light: #dee2e6;
+  --border-medium: #adb5bd;
+  --border-dark: #6c757d;
+  
+  /* Shadow Colors */
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.2);
+  
+  /* Button Colors */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-text: var(--white);
+  --btn-primary-hover: var(--primary-dark);
+  
+  --btn-secondary-bg: var(--secondary-color);
+  --btn-secondary-text: var(--white);
+  --btn-secondary-hover: var(--secondary-dark);
+  
+  --btn-outline-bg: transparent;
+  --btn-outline-text: var(--primary-color);
+  --btn-outline-border: var(--primary-color);
+  --btn-outline-hover-bg: var(--primary-color);
+  --btn-outline-hover-text: var(--white);
+  
+  /* Status Colors */
+  --status-placed: var(--warning-color);
+  --status-confirmed: var(--info-color);
+  --status-picked_up: var(--accent-color);
+  --status-delivered: var(--success-color);
+  --status-cancelled: var(--error-color);
+  
+  /* Form Colors */
+  --input-bg: var(--white);
+  --input-border: var(--border-light);
+  --input-focus-border: var(--primary-color);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--text-muted);
+  
+  /* Card Colors */
+  --card-bg: var(--white);
+  --card-border: var(--border-light);
+  --card-shadow: var(--shadow-light);
+  
+  /* Navigation Colors */
+  --nav-bg: var(--white);
+  --nav-text: var(--text-primary);
+  --nav-hover: var(--primary-color);
+  
+  /* Hero Section Colors */
+  --hero-bg: var(--bg-hero);
+  --hero-text: var(--text-light);
+  --hero-overlay: rgba(0, 0, 0, 0.3);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --border-light: #000000;
+    --border-medium: #333333;
+    --shadow-light: rgba(0, 0, 0, 0.8);
+    --shadow-medium: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --border-light: #404040;
+    --border-medium: #606060;
+    --card-bg: #2d2d2d;
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+  }
+}

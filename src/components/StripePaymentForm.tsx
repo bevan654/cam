@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { CardElement } from '@stripe/react-stripe-js'
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { currencySymbol } from '../config/stripe'
 
 interface StripePaymentFormProps {
   amount: number
   onCardError?: (error: string) => void
+  onPaymentMethodReady?: (paymentMethod: any) => void
 }
 
 const cardElementOptions = {
@@ -25,16 +26,59 @@ const cardElementOptions = {
 
 export default function StripePaymentForm({ 
   amount, 
-  onCardError
+  onCardError,
+  onPaymentMethodReady
 }: StripePaymentFormProps) {
-  const [cardError] = useState<string>('')
+  const stripe = useStripe();
+  const elements = useElements();
+  const [cardError, setCardError] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Expose getCardElement to parent via callback
+  // Expose card error to parent
   useEffect(() => {
     if (onCardError) {
-      onCardError(cardError)
+      onCardError(cardError);
     }
-  }, [cardError, onCardError])
+  }, [cardError, onCardError]);
+
+  // Handle card element changes
+  const handleCardChange = (event: any) => {
+    if (event.error) {
+      setCardError(event.error.message);
+    } else {
+      setCardError('');
+    }
+  };
+
+  // Create payment method when form is ready
+  const createPaymentMethod = async () => {
+    if (!stripe || !elements) {
+      throw new Error('Stripe not initialized');
+    }
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      throw new Error('Card element not found');
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return paymentMethod;
+  };
+
+  // Expose createPaymentMethod to parent
+  useEffect(() => {
+    if (onPaymentMethodReady) {
+      onPaymentMethodReady({ createPaymentMethod });
+    }
+  }, [onPaymentMethodReady]);
 
   return (
     <div className="stripe-payment-form">
@@ -44,6 +88,7 @@ export default function StripePaymentForm({
           <CardElement
             id="card-element"
             options={cardElementOptions}
+            onChange={handleCardChange}
             className="card-element"
           />
         </div>

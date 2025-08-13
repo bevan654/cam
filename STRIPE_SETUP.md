@@ -1,109 +1,94 @@
-# Stripe Payment Intents API Setup Guide
+# 🚀 Stripe Payment Integration Setup
 
-This guide covers setting up Stripe's Payment Intents API for the Campus Angel food delivery app.
+## **Environment Variables Required**
 
-## 🚀 What Changed
+Add these to your `.env.local` file:
 
-**Previous Implementation**: Only tokenized card details, never created or confirmed payments
-**New Implementation**: Full Payment Intents API flow with server-side intent creation and client-side confirmation
-
-## 🔧 Setup Steps
-
-### 1. Environment Variables
-
-Create a `.env` file in your project root:
-
-```env
-STRIPE_SECRET_KEY=sk_test_your_test_secret_key_here
+```bash
+# Stripe Configuration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
+STRIPE_SECRET_KEY=sk_test_your_secret_key_here
 ```
 
-**Important**: Never commit this file to version control!
+## **Stripe Account Setup**
 
-### 2. Server-Side Configuration
+1. **Create Stripe Account**: Go to [stripe.com](https://stripe.com) and create an account
+2. **Get API Keys**: 
+   - Go to Developers → API Keys
+   - Copy your Publishable Key (starts with `pk_test_`)
+   - Copy your Secret Key (starts with `sk_test_`)
+3. **Update Environment Variables**: Replace the placeholder values in `.env.local`
 
-The API function `/api/create-payment-intent.ts` is already configured to:
-- Read `amountCents` and `currency` from JSON body
-- Validate `amountCents` is an integer ≥ 50 for AUD
-- Use `stripe.paymentIntents.create()` with `automatic_payment_methods.enabled = true`
-- Return `client_secret` in JSON
-- Read `STRIPE_SECRET_KEY` from environment variables
-- Use TypeScript and proper error handling
+## **Supabase Database Setup**
 
-### 3. Client-Side Configuration
+Create an `orders` table in your Supabase database:
 
-Update `src/config/stripe.ts` with your publishable key:
+```sql
+CREATE TABLE orders (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  customer_id UUID REFERENCES auth.users(id),
+  items JSONB NOT NULL,
+  total DECIMAL(10,2) NOT NULL,
+  payment_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'placed',
+  delivery_details JSONB,
+  contact_info JSONB,
+  payment_method TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
-```typescript
-export const stripePromise = loadStripe('pk_test_your_test_publishable_key')
+-- Enable RLS
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for users to see their own orders
+CREATE POLICY "Users can view their own orders" ON orders
+  FOR SELECT USING (auth.uid() = customer_id);
+
+CREATE POLICY "Users can insert their own orders" ON orders
+  FOR INSERT WITH CHECK (auth.uid() = customer_id);
 ```
 
-## 🧪 Testing
+## **Testing the Integration**
 
-### Test Mode Setup
+1. **Test Card Numbers**:
+   - Success: `4242424242424242`
+   - Decline: `4000000000000002`
+   - 3D Secure: `4000002500003155`
 
-1. **Get test keys** from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
-2. **Toggle "Viewing test data"** in your Stripe Dashboard
-3. **Use test card**: `4242 4242 4242 4242` (any future expiry, any CVC)
+2. **Test Flow**:
+   - Add items to cart
+   - Go to checkout
+   - Fill in delivery details
+   - Click "Place Order"
+   - Use test card: `4242424242424242`
+   - Expiry: Any future date
+   - CVC: Any 3 digits
 
-### Payment Flow Verification
+## **Security Features**
 
-After successful payment:
-1. **Check Stripe Dashboard** → Payments section
-2. **Transaction should appear** with status "Succeeded"
-3. **Payment Intent details** should show the full payment flow
+✅ **Price Validation**: Backend validates all prices to prevent tampering
+✅ **Payment Verification**: Server-to-server verification with Stripe
+✅ **Authentication Required**: Users must be logged in to checkout
+✅ **Order Creation**: Orders are only created after successful payment verification
 
-## 🔒 Security Notes
+## **API Endpoints**
 
-- **Secret keys** are only used server-side in Vercel functions
-- **Publishable keys** are safe for client-side use
-- **Environment variables** are automatically handled by Vercel
-- **HTTPS is enforced** in production
+- `POST /api/create-payment-intent` - Creates Stripe PaymentIntent
+- `POST /api/create-order` - Creates order after successful payment
 
-## 🚀 Production Deployment
+## **Error Handling**
 
-### Vercel Environment Variables
+The system handles:
+- Invalid payment amounts
+- Failed payments
+- Network errors
+- Authentication failures
+- Database errors
 
-1. **Go to Vercel Dashboard** → Your Project → Settings → Environment Variables
-2. **Add**: `STRIPE_SECRET_KEY` with your live secret key
-3. **Redeploy** the project
+## **Next Steps**
 
-### Key Updates
-
-1. **Switch to live keys** in Stripe Dashboard
-2. **Update publishable key** in `src/config/stripe.ts`
-3. **Test thoroughly** before going live
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-1. **Payment Intent creation fails**:
-   - Check `STRIPE_SECRET_KEY` in Vercel environment variables
-   - Verify the key is correct and has proper permissions
-
-2. **Client-side errors**:
-   - Ensure publishable key is correct in `src/config/stripe.ts`
-   - Check browser console for detailed error messages
-
-3. **404 on API routes**:
-   - Verify `vercel.json` is configured correctly
-   - Ensure API functions are in the `api/` folder
-
-### Testing Checklist
-
-- [ ] Test card details are accepted
-- [ ] Payment Intent is created successfully
-- [ ] Payment confirmation works
-- [ ] Transaction appears in Stripe Dashboard
-- [ ] Order confirmation is displayed
-- [ ] Error handling works for declined cards
-
-## 📚 Additional Resources
-
-- [Stripe Payment Intents Documentation](https://stripe.com/docs/payments/payment-intents)
-- [Vercel Serverless Functions](https://vercel.com/docs/functions)
-- [Stripe Test Cards](https://stripe.com/docs/testing#cards)
-
----
-
-**Note**: This implementation creates real Payment Intents and processes actual test payments. Always test thoroughly in test mode before going live.
+1. **Real Card Collection**: Replace hardcoded test card with Stripe Elements
+2. **Webhook Handling**: Add webhook endpoints for payment status updates
+3. **Order Management**: Create admin interface for order management
+4. **Email Notifications**: Send confirmation emails after successful orders
