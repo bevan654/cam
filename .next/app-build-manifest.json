@@ -41,14 +41,6 @@
       "static/chunks/984-d80900e8b0e8f194.js",
       "static/chunks/app/checkout/page-5872b8cf1c2a4aef.js"
     ],
-    "/forgot-password/page": [
-      "static/chunks/webpack-919f85913ee3d6e0.js",
-      "static/chunks/fd9d1056-016abee54dfb105d.js",
-      "static/chunks/117-c7d5734a2619d2d7.js",
-      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
-      "static/chunks/448-f6ab49dc14a4a2fb.js",
-      "static/chunks/app/forgot-password/page-3fdc85b40df9c5e4.js"
-    ],
     "/order-confirmation/page": [
       "static/chunks/webpack-919f85913ee3d6e0.js",
       "static/chunks/fd9d1056-016abee54dfb105d.js",
@@ -64,22 +56,6 @@
       "static/chunks/main-app-2a3f8bf6f4179ad7.js",
       "static/chunks/448-f6ab49dc14a4a2fb.js",
       "static/chunks/app/order-tracking/page-b5b0f66864415ceb.js"
-    ],
-    "/register/page": [
-      "static/chunks/webpack-919f85913ee3d6e0.js",
-      "static/chunks/fd9d1056-016abee54dfb105d.js",
-      "static/chunks/117-c7d5734a2619d2d7.js",
-      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
-      "static/chunks/448-f6ab49dc14a4a2fb.js",
-      "static/chunks/app/register/page-fc6d8a902e8e609a.js"
-    ],
-    "/restaurants/page": [
-      "static/chunks/webpack-919f85913ee3d6e0.js",
-      "static/chunks/fd9d1056-016abee54dfb105d.js",
-      "static/chunks/117-c7d5734a2619d2d7.js",
-      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
-      "static/chunks/448-f6ab49dc14a4a2fb.js",
-      "static/chunks/app/restaurants/page-af40f069fba18cfe.js"
     ],
     "/login/page": [
       "static/chunks/webpack-919f85913ee3d6e0.js",
@@ -97,6 +73,22 @@
       "static/chunks/448-f6ab49dc14a4a2fb.js",
       "static/chunks/app/page-11c8b614f8accb1e.js"
     ],
+    "/restaurants/page": [
+      "static/chunks/webpack-919f85913ee3d6e0.js",
+      "static/chunks/fd9d1056-016abee54dfb105d.js",
+      "static/chunks/117-c7d5734a2619d2d7.js",
+      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
+      "static/chunks/448-f6ab49dc14a4a2fb.js",
+      "static/chunks/app/restaurants/page-af40f069fba18cfe.js"
+    ],
+    "/register/page": [
+      "static/chunks/webpack-919f85913ee3d6e0.js",
+      "static/chunks/fd9d1056-016abee54dfb105d.js",
+      "static/chunks/117-c7d5734a2619d2d7.js",
+      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
+      "static/chunks/448-f6ab49dc14a4a2fb.js",
+      "static/chunks/app/register/page-fc6d8a902e8e609a.js"
+    ],
     "/reset-password/page": [
       "static/chunks/webpack-919f85913ee3d6e0.js",
       "static/chunks/fd9d1056-016abee54dfb105d.js",
@@ -112,6 +104,14 @@
       "static/chunks/main-app-2a3f8bf6f4179ad7.js",
       "static/chunks/448-f6ab49dc14a4a2fb.js",
       "static/chunks/app/restaurants/subway/page-589c7d70465e551b.js"
+    ],
+    "/forgot-password/page": [
+      "static/chunks/webpack-919f85913ee3d6e0.js",
+      "static/chunks/fd9d1056-016abee54dfb105d.js",
+      "static/chunks/117-c7d5734a2619d2d7.js",
+      "static/chunks/main-app-2a3f8bf6f4179ad7.js",
+      "static/chunks/448-f6ab49dc14a4a2fb.js",
+      "static/chunks/app/forgot-password/page-3fdc85b40df9c5e4.js"
     ]
   }
 }
