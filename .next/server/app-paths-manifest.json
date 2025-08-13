@@ -1,13 +1,11 @@
 {
-  "/page": "app/page.js",
-  "/login/page": "app/login/page.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js",
-  "/api/auth/me/route": "app/api/auth/me/route.js",
-  "/restaurants/page": "app/restaurants/page.js",
+  "/api/driver/orders/route": "app/api/driver/orders/route.js",
   "/restaurants/subway/page": "app/restaurants/subway/page.js",
   "/checkout/page": "app/checkout/page.js",
-  "/api/create-payment-intent/route": "app/api/create-payment-intent/route.js",
-  "/api/create-order/route": "app/api/create-order/route.js",
-  "/order-tracking/page": "app/order-tracking/page.js",
-  "/api/validate-order/route": "app/api/validate-order/route.js"
+  "/page": "app/page.js",
+  "/api/driver/update-order-status/route": "app/api/driver/update-order-status/route.js",
+  "/api/driver/all-orders/route": "app/api/driver/all-orders/route.js",
+  "/driver/orders/page": "app/driver/orders/page.js",
+  "/driver/page": "app/driver/page.js",
+  "/driver/all-orders/page": "app/driver/all-orders/page.js"
 }
