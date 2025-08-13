@@ -316,13 +316,20 @@ export default function CheckoutPage() {
         throw new Error(errorData.error || 'Failed to create order');
       }
 
-      const { orderId } = await orderResponse.json();
+      const orderData = await orderResponse.json();
 
       // Clear cart from localStorage
       localStorage.removeItem('campus-angel-cart');
 
-      // Redirect to order tracking page
-      router.push(`/order-tracking?orderId=${orderId}`);
+      // Redirect to order tracking page with the actual order ID
+      const orderId = orderData.order?.id;
+      if (orderId) {
+        router.push(`/order-tracking?orderId=${orderId}`);
+      } else {
+        console.error('No order ID returned from API:', orderData);
+        alert('Order created but could not redirect. Please check your orders.');
+        router.push('/account');
+      }
 
     } catch (error) {
       console.error('Error processing payment:', error);

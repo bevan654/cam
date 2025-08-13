@@ -9,6 +9,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 export async function POST(request) {
   try {
     const { paymentIntentId, items, total, deliveryDetails, contactInfo, paymentMethod } = await request.json();
+    
+    console.log('Creating order with payment intent:', paymentIntentId);
+    console.log('Order details:', { items: items.length, total, paymentMethod });
 
     // Get the authorization header
     const authHeader = request.headers.get('authorization');
@@ -24,21 +27,27 @@ export async function POST(request) {
     // Verify the user
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData.user) {
+      console.error('User verification failed:', userError);
       return NextResponse.json(
         { error: 'Invalid authentication token' },
         { status: 401 }
       );
     }
 
+    console.log('User verified:', userData.user.id);
+
     // Step 5: Backend verifies payment status with Stripe (server-to-server call)
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     
     if (paymentIntent.status !== 'succeeded') {
+      console.error('Payment not completed:', paymentIntent.status);
       return NextResponse.json(
         { error: 'Payment not completed' },
         { status: 400 }
       );
     }
+
+    console.log('Payment verified successfully');
 
     // Verify the amount matches
     if (paymentIntent.amount !== Math.round(total * 100)) {
@@ -54,6 +63,7 @@ export async function POST(request) {
     }
 
     // Insert new row into Supabase orders table
+    console.log('Inserting order into database...');
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -77,6 +87,9 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+
+    console.log('Order created successfully:', orderData);
+    console.log('Order ID:', orderData.id);
 
     // Clear the cart from localStorage (this will be done on the frontend)
     
