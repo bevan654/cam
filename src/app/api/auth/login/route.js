@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../supabase.js'
+import { supabasePublic } from '../../supabase.js'
 
 export async function POST(request) {
   try {
@@ -12,8 +12,8 @@ export async function POST(request) {
       }, { status: 400 })
     }
 
-    // Authenticate with Supabase
-    const { data, error } = await supabase.auth.signInWithPassword({
+    // Authenticate with Supabase using public client
+    const { data, error } = await supabasePublic.auth.signInWithPassword({
       email,
       password,
     })
@@ -31,7 +31,8 @@ export async function POST(request) {
       }, { status: 401 })
     }
 
-    // Get user profile data
+    // Get user profile data using service role client for database access
+    const { supabase } = await import('../../supabase.js')
     const { data: profileData, error: profileError } = await supabase
       .from('profiles')
       .select('*')

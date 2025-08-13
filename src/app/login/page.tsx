@@ -48,8 +48,8 @@ export default function LoginPage() {
 
       if (response.ok) {
         // Store tokens
-        localStorage.setItem('accessToken', data.session.accessToken);
-        localStorage.setItem('refreshToken', data.session.refreshToken);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
         
         // Update navbar user state
         if ((window as any).updateNavbarUser) {
