@@ -310,7 +310,7 @@ export default function DriverAllOrdersPage() {
                     <strong>Room:</strong> {order.delivery_details?.room || 'N/A'}
                   </p>
                   <p style={{ margin: '5px 0', fontSize: '14px' }}>
-                    <strong>Instructions:</strong> {order.contact_info?.instructions || 'None'}
+                    <strong>Instructions:</strong> {order.delivery_details?.instructions || 'None'}
                   </p>
                 </div>
               </div>
